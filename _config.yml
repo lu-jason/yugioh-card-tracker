@@ -22,7 +22,7 @@ title: Yugioh Card Tracker
 email: jayce.lu.97@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Personal tracker for Yugioh cards
-baseurl: "lu-jason.github.io " # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://lu-jason.github.io/yugioh-card-tracker/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: mekillhim
 github_username:  lu-jason
