@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/yugioh-card-tracker/static/css/main.18acf3da.css",
-    "main.js": "/yugioh-card-tracker/static/js/main.acea3f98.js",
+    "main.js": "/yugioh-card-tracker/static/js/main.a8780d93.js",
     "static/js/564.47670cf2.chunk.js": "/yugioh-card-tracker/static/js/564.47670cf2.chunk.js",
     "index.html": "/yugioh-card-tracker/index.html",
     "main.18acf3da.css.map": "/yugioh-card-tracker/static/css/main.18acf3da.css.map",
-    "main.acea3f98.js.map": "/yugioh-card-tracker/static/js/main.acea3f98.js.map",
+    "main.a8780d93.js.map": "/yugioh-card-tracker/static/js/main.a8780d93.js.map",
     "564.47670cf2.chunk.js.map": "/yugioh-card-tracker/static/js/564.47670cf2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.18acf3da.css",
-    "static/js/main.acea3f98.js"
+    "static/js/main.a8780d93.js"
   ]
 }
