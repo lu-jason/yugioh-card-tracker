@@ -51,12 +51,12 @@ function App() {
 
   useEffect(() => {
     const unSubscribe = auth.onAuthStateChanged(async (user) => {
-      console.log(user);
       if (user && user.email) {
         dispatch(
           login({
             email: user.email,
             id: user.uid,
+            photoUrl: user.photoURL,
           }),
         );
       }

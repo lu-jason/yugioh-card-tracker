@@ -49,12 +49,14 @@ export default function OwnedCards() {
           cards.push(doc.data() as CardsState);
         });
 
+        console.log('Adding card');
+
         dispatch(addCards(cards));
       }
     };
 
     getCards();
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   const handleDeleteClick = (rowId: GridRowId) => () => {
     if (userId) dispatch(deleteCard({ rowId: rowId, userId: userId }));

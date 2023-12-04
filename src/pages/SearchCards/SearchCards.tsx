@@ -35,7 +35,6 @@ export default function SearchCards() {
   const userId = useAppSelector(selectUserId);
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>, id: string | undefined) => {
-    console.log(event.currentTarget, id);
     if (id) {
       setAnchorEl(event.currentTarget);
       setPopOverId(id);
@@ -122,7 +121,10 @@ export default function SearchCards() {
     let selectedRows: CardsState[] = toCardsStates(
       searchData.filter((row) => selectedRowIds.includes(row.id)),
     );
-    if (userId) dispatch(addCardsToDb({ rows: selectedRows, userId: userId }));
+    if (userId) {
+      dispatch(addCards(selectedRows));
+      dispatch(addCardsToDb({ rows: selectedRows, userId: userId }));
+    }
   };
 
   return (

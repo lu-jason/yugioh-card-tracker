@@ -30,11 +30,11 @@ export const getCardsFromFirebase = async (id: string): Promise<CardsState[]> =>
   return cards;
 };
 
-export const deleteCardFromFirebase = async (id: string, userId: string) => {
-  let cardFromFirebase = await getDoc(doc(db, 'cards', String(id)));
+export const deleteCardFromFirebase = async (rowId: string, userId: string) => {
+  let cardFromFirebase = await getDoc(doc(db, userId, rowId));
 
   if (cardFromFirebase.exists()) {
-    console.log('Deleted card with id', id);
+    console.log('Deleted card with id', rowId);
     deleteDoc(cardFromFirebase.ref);
   }
 };

@@ -59,7 +59,6 @@ export const cardsSlice = createSlice({
     },
     addCardsToDb: (_, action: PayloadAction<{ rows: GridValidRowModel[]; userId: string }>) => {
       toCardsStates(action.payload.rows).forEach((payloadValue: CardsState) => {
-        addCard(action.payload.rows);
         addCardsToFirebase(toCardsState(payloadValue), action.payload.userId);
       });
     },

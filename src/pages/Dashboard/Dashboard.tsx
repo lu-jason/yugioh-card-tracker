@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -15,12 +15,14 @@ import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { selectUser } from '../../features/auth/authSlice';
 import { useAppSelector } from '../../hooks';
 import OwnedCards from '../OwnedCards/OwnedCards';
 import SearchCards from '../SearchCards/SearchCards';
-import { mainListItems, secondaryListItems } from './listItems';
+import SearchIcon from '@mui/icons-material/Search';
+import FolderIcon from '@mui/icons-material/Folder';
+import { Avatar, ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -86,7 +88,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         }),
         width: theme.spacing(7),
         [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
+          width: theme.spacing(7),
         },
       }),
     },
@@ -94,16 +96,36 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Dashboard() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [component, setComponent] = useState('search');
+  const user = useAppSelector(selectUser);
+  let photoUrl = '';
+  let email = '';
+  if (user) {
+    if (user.photoUrl) {
+      photoUrl = user.photoUrl;
+    }
+    if (user.email) {
+      email = user.email;
+    }
+  }
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const user = useAppSelector(selectUser);
+  const [width, setWidth] = useState<number>(window.innerWidth);
 
-  React.useEffect(() => {
-    console.log('Dashboard User updated', user);
-  }, [user]);
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    };
+  }, []);
+
+  const isMobile = width <= 768;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -137,14 +159,15 @@ export default function Dashboard() {
           >
             Dashboard
           </Typography>
-          <IconButton color='inherit'>
-            <Badge
-              badgeContent={4}
-              color='secondary'
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Stack direction='row'>
+            <IconButton color='inherit'>
+              <LogoutIcon />
+            </IconButton>
+            <Avatar
+              alt={user?.email}
+              src={photoUrl}
+            ></Avatar>
+          </Stack>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -165,9 +188,18 @@ export default function Dashboard() {
         </Toolbar>
         <Divider />
         <List component='nav'>
-          {mainListItems}
-          <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
+          <ListItemButton>
+            <ListItemIcon onClick={() => setComponent('search')}>
+              <SearchIcon />
+            </ListItemIcon>
+            <ListItemText primary='Search' />
+          </ListItemButton>
+          <ListItemButton onClick={() => setComponent('owned')}>
+            <ListItemIcon>
+              <FolderIcon />
+            </ListItemIcon>
+            <ListItemText primary='Owned' />
+          </ListItemButton>
         </List>
       </Drawer>
       <Box
@@ -199,15 +231,24 @@ export default function Dashboard() {
                   flexDirection: 'column',
                 }}
               >
-                <SearchCards />
+                {component === 'search' ? <SearchCards /> : <OwnedCards />}
               </Paper>
             </Grid>
-            {/* Recent Orders */}
-            <Grid item>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <OwnedCards />
-              </Paper>
-            </Grid>
+
+            {/* Render the owned cards as well if not mobile */}
+            {component === 'search' && !isMobile && (
+              <Grid item>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <OwnedCards />
+                </Paper>
+              </Grid>
+            )}
           </Grid>
         </Container>
       </Box>
